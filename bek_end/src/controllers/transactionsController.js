@@ -1,5 +1,5 @@
 const Transaction = require('../models/Transaction');
-let transactions = []; // Временное хранилище данных
+let transactions = [];
 
 
 exports.getAllTransactions = (req, res) => {
@@ -18,7 +18,7 @@ exports.createTransaction = (req, res) => {
 };
 
 exports.getTransactionById = (req, res) => {
-  const transactionId = parseInt(req.params.id); // req.params содержит параметры маршрута
+  const transactionId = parseInt(req.params.id); 
   const transaction = transactions.find(t => t.id === transactionId);
 
   if (!transaction) {
@@ -33,10 +33,10 @@ exports.updateTransaction = (req, res) => {
   const transactionIndex = transactions.findIndex(t => t.id === transactionId);
 
   if (transactionIndex === -1) {
-    return res.status(404).json({ message: 'Транзакция не найдена' });
+    return res.status(404).json({ message: 'Transaction not found' });
   }
 
-  transactions[transactionIndex] = { ...transactions[transactionIndex], ...req.body }; // Обновляем данные
+  transactions[transactionIndex] = { ...transactions[transactionIndex], ...req.body }; 
 
   res.json(transactions[transactionIndex]);
 };

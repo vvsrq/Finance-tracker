@@ -5,13 +5,13 @@ const closeBtn = document.querySelector('.btnC');
 
 // Обработчик для показа формы
 showLoginBtn.addEventListener('click', () => {
-    loginFormContainer.style.display = 'flex'; // Показываем форму как flex-контейнер
+    loginFormContainer.style.display = 'flex'; 
 });
 
 // Обработчик для скрытия формы
 closeBtn.addEventListener('click', (event) => {
-    event.preventDefault(); // Предотвращаем стандартное поведение кнопки
-    loginFormContainer.style.display = 'none'; // Скрываем форму
+    event.preventDefault(); 
+    loginFormContainer.style.display = 'none'; 
 });
 
 
