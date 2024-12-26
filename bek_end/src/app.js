@@ -3,11 +3,13 @@ const path = require('path');
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, '/front_war')));
+app.use(express.static(path.join(process.cwd(), '/front_war')));
 
 
 app.get('/', (req, res) => {
-  const filePath = "C:\\VS Code Folder\\Finance-tracker\\front_war\\main.html"
+
+const filePath = path.join(process.cwd(), 'front_war', 'main.html');
+
   
   res.sendFile(filePath);
 });
