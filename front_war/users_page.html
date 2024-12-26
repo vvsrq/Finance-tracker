@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Page</title>
+    <link rel="stylesheet" href="user_page.css">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <h2>Menu</h2>
+        <button onclick="closeSidebar()">Close Sidebar</button>
+        <button>My Account</button>
+        <button>My Wallet</button>
+        <button>Calculator</button>
+    </div>
+
+    <div class="buttonM">
+        <div class="header"></div>
+            <button class="menu-button" onclick="openSidebar()">☰</button>
+            
+        </div>
+    </div>
+    
+        <div class="content">
+        
+    
+            <div class="card">
+                <div class="card-content1">
+                 <h3>Diagram</h3>
+                <div class="diagram">Diagram</div>
+                <p>Your income</p>
+                <p>Your spendings</p>   
+                </div>
+            </div>
+    
+            <div class="card">
+                <h3>Spendings divided by groups</h3>
+                <div class="groups">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+
+
+    <script src="user_page.js">
+    </script>
+</body>
+</html>

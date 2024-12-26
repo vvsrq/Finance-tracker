@@ -1,0 +1,131 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #eeeae4;
+    background-color: #0a223a;
+    display: flex;
+    overflow: hidden;
+}
+
+.conteiner{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.buttonM{
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 250px;
+    height: 100%;
+    background-color: #0f365d;
+    color: #eeeae4;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    transition: left 0.3s ease;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #34495e;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.sidebar button:hover {
+    background-color: #1abc9c;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+    height: 100hv;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 13px;
+}
+
+.menu-button {
+    background-color: #04471C;
+    color: #eeeae4;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+}
+
+.menu-button:hover {
+    background-color: #1abc9c;
+}
+
+.card {
+    background: #eeeae4;
+    color: #0a223a;
+    border-radius: 10px;
+    flex: 1;
+    height: auto;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    
+}
+
+.card-content1{
+    height: 40%;
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.diagram {
+    background-color: #f8d7da;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.groups {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.circle {
+    background-color: #e0e0e0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
