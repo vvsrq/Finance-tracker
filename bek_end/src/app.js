@@ -6,6 +6,9 @@ const sequelize = require('./config.js');
 const Transaction = require('./models/Transaction.js');
 const Category = require('./models/Category.js');
 const usersRoutes = require('./routes/users.js');
+const loginRoutes = require('./routes/login.js')
+const transactionsRoutes = require('./routes/transactions');
+const categoriesRoutes = require('./routes/categories');
 
 const app = express();
 app.use(express.json());
@@ -26,6 +29,9 @@ app.use(session({
 }));
 
 app.use('/users.js', usersRoutes);
+app.use('/login.js', loginRoutes);
+app.use('/transactions', transactionsRoutes);
+app.use('/categories', categoriesRoutes);
 
 app.use(express.static(path.join(__dirname, '..', '..', 'front_war')));
 
@@ -40,23 +46,26 @@ app.get('/users-page',(req,res)=>{
   res.sendFile(path.join(__dirname, '..', '..', 'front_war', 'users_page.html'));
 }
 )
+
+app.get('/profile',(req,res)=>{
+  res.sendFile(path.join(__dirname, '..', '..', 'front_war', 'profile.html'));
+}
+)
 //test commit
 
 
 const PORT = 3000;
 
-// const User = require('./models/User');
-
-// async function testDatabaseConnection() {
+// async function startServer() {
 //   try {
-//     const users = await User.findAll();
-//     console.log('Подключение к базе данных успешно!', users);
+//       await sequelize.sync({ force: true });  
+//       console.log('База данных синхронизирована');
 //   } catch (error) {
-//     console.error('Ошибка подключения к базе данных:', error);
+//       console.error('Ошибка при запуске сервера:', error);
 //   }
 // }
 
-// testDatabaseConnection();
+// startServer();
 
 
 

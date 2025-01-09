@@ -21,8 +21,8 @@
                 <a href="" class="hB">FAQs</a> 
             </div>
             <div class="cB">
-                <button class="btn1" id="showLogin">Log in</button>
-                <button class="btn2">Sign in</button>
+                <button class="btn1" id="showLogin">Sign in</button>
+                <button class="btn2" id="showSingin">Log in</button>
             </div>
         </div>
     </header>   
@@ -70,7 +70,8 @@
     <div class="hiden">
         <div class="login">
             <form id="loginForm">
-                <h6 style="font-size: medium; text-align: center;">Login</h6>
+                
+                <h6 style="font-size: medium; text-align: center;">Sign in</h6>
                 <div class="form-group">
                     <label for="name">Username</label>
                     <input type="text" id="name" name="name" required>
@@ -80,11 +81,33 @@
                     <input type="password" id="password" name="password" required>
                 </div>
                 <div class="login-btn">
-                    <button type="submit" class="btn">Login</button>
+                    <button type="submit" class="btn">Sign in</button>
                 </div>
                 <div id="error" class="error"></div>
             </form>
             <button type="close" class="btnC">close</button>
+        </div>
+    </div>
+
+    <div class="hiden-s">
+        <div class="signin">
+            <form id="signinForm">
+                
+                <h6 style="font-size: medium; text-align: center;">Login</h6>
+                <div class="form-group-s">
+                    <label for="name">Username</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group-s">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="signin-btn">
+                    <button type="submit" class="btns">Log in</button>
+                </div>
+                <div id="error" class="error"></div>
+            </form>
+            <button type="close" class="btnsC">close</button>
         </div>
     </div>
 

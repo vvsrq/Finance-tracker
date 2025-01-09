@@ -13,7 +13,7 @@ header {
     padding-bottom: 15px;
 }
 
-footer{
+footer {
     display: flex;
     background: #eeeae4;
     color: #0a223a;
@@ -21,7 +21,7 @@ footer{
     padding-right: 5%;
 }
 
-.conteiner{
+.conteiner {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -29,21 +29,21 @@ footer{
     width: 100%;
 }
 
-.cLogo{
+.cLogo {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 10px;
 }
 
-.cA{
+.cA {
     display: flex;
     align-items: center;
     justify-content: start;
     margin-top: 5px;
 }
 
-.cB{
+.cB {
     display: flex;
     align-items: center;
     justify-content: end;
@@ -51,7 +51,7 @@ footer{
     width: 70%;
 }
 
-.cB button{
+.cB button {
     margin-top: 5px;
     outline-style: hidden;
     border: none;
@@ -59,12 +59,12 @@ footer{
     font-size: 15px;
 }
 
-.btn1{
+.btn1 {
     color: #29339B;
     border: none;
 }
 
-.btn2{
+.btn2 {
     margin-left: 5px;
     background-color: #0a223a;
     color: #eeeae4;
@@ -72,27 +72,26 @@ footer{
     height: 30px;
 }
 
-
-.hB{
+.hB {
     text-decoration: none;
     margin-right: 5px;
 }
 
-.conteiner_2{
+.conteiner_2 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     width: 100%;
-    background-image: url(img1.png); 
-    height: 500px; 
-    margin-bottom: 50px; 
-    margin-top: 50px; 
-    background-size: contain; 
-    padding-left: 20%; 
+    background-image: url(img1.png);
+    height: 500px;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    background-size: contain;
+    padding-left: 20%;
 }
 
-.inform{
+.inform {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,14 +103,14 @@ footer{
     height: 80%;
 }
 
-.inform_button button{
+.inform_button button {
     border: none;
     outline-style: hidden;
     border-radius: 20px;
     font-size: 15px;
 }
 
-.iB{
+.iB {
     font-size: large;
     border: none;
     border-radius: 10px;
@@ -121,7 +120,7 @@ footer{
     height: 50px;
 }
 
-.inf_in_inform{
+.inf_in_inform {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -129,7 +128,7 @@ footer{
     font-size: 2em;
 }
 
-.conteiner_3{
+.conteiner_3 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -140,7 +139,7 @@ footer{
     font-size: 2.3em;
 }
 
-.conteiner_4{
+.conteiner_4 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -151,7 +150,7 @@ footer{
     font-size: 1.5em;
 }
 
-.conteiner_5{
+.conteiner_5 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -162,33 +161,33 @@ footer{
     font-size: 1.5em;
 }
 
-.conteiner_6{
+.conteiner_6 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
 }
 
+/*  Начальное состояние для скрытых окон, НИЧЕГО НЕ УДАЛЯЙТЕ */
 .hiden {
-    display: none; /* Изначально скрыта */
-    position: fixed; /* Фиксированное положение */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
-    z-index: 1000; /* Поверх всех элементов */
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
     justify-content: center;
     align-items: center;
+    display: none;  /*  Скрываем по умолчанию*/
 }
 
 .hiden.show {
-    display: block;
-    opacity: 1;
+    display: flex; /*  Делаем видимыми когда добавляется класс show  */
 }
 
 
-.login-conteiner{
+.login-conteiner {
     background-color: #0a223a;
     color: #eeeae4;
     padding-top: 20px;
@@ -202,13 +201,13 @@ footer{
     justify-content: center;
 }
 
-.loginForm h6{
+.loginForm h6 {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.login-conteiner h6{
+.login-conteiner h6 {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -218,7 +217,7 @@ footer{
 }
 
 .login {
-    background-color: #ffffff; /* Белый фон для самой формы */
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -226,13 +225,13 @@ footer{
     max-width: 90%;
 }
 
-.login-btn{
+.login-btn {
     display: flex;
     align-items: center;
     justify-content: space-around;
 }
 
-.btn{
+.btn {
     font-size: 1.0em;
     border: none;
     border-radius: 10px;
@@ -242,7 +241,7 @@ footer{
     height: 25px;
 }
 
-.btnC{
+.btnC {
     font-size: 1.0em;
     border: none;
     border-radius: 10px;
@@ -252,6 +251,67 @@ footer{
     height: 25px;
 }
 
-.form-group{
+.form-group {
+    padding-bottom: 20px;
+}
+
+/* -------------------------------------*/
+/*  Начальное состояние для скрытых окон, НИЧЕГО НЕ УДАЛЯЙТЕ */
+.hiden-s {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    display: none;  /*  Скрываем по умолчанию*/
+}
+
+.hiden-s.show {
+    display: flex; /*  Делаем видимыми когда добавляется класс show  */
+}
+
+.signin {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    width: 300px;
+    max-width: 90%;
+}
+
+
+.signin-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+
+.btns {
+    font-size: 1.0em;
+    border: none;
+    border-radius: 10px;
+    background-color: #04471C;
+    color: #eeeae4;
+    width: 60px;
+    height: 25px;
+}
+
+.btnsC {
+    font-size: 1.0em;
+    border: none;
+    border-radius: 10px;
+    background-color: #eeeae4;
+    color: #0a223a;
+    width: 60px;
+    height: 25px;
+}
+
+
+.form-group-s {
     padding-bottom: 20px;
 }
