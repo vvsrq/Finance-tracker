@@ -34,23 +34,20 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
     const data = Object.fromEntries(formData);
 
     try {
-    const response = await fetch('/users.js', { // Отправляем POST-запрос на /users
+    const response = await fetch('/users', { 
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data), // Преобразуем данные в JSON
+      body: JSON.stringify(data), 
     });
 
     if (response.ok) {
-      // Регистрация успешна
       console.log('Регистрация успешна');
-      // Перенаправляем пользователя или отображаем сообщение об успехе
       
     } else {
       const errorData = await response.json();
       console.error('Ошибка регистрации:', errorData.message);
-      // Отображаем сообщение об ошибке пользователю
       alert('Ошибка регистрации: ' + errorData.message); 
     }
   } catch (error) {
@@ -74,13 +71,11 @@ document.getElementById('signinForm').addEventListener('submit', async (event) =
       body: JSON.stringify(data),
   });
   if (response.ok) {
-      // Регистрация успешна
     console.log('Регистрация успешна');
       window.location.href = '/profile';
       } else {
     const errorData = await response.json();
       console.error('Ошибка регистрации:', errorData.message);
-      // Отображаем сообщение об ошибке пользователю
       errorDiv.textContent = 'Ошибка регистрации: ' + errorData.message;
       }
 } catch (error) {

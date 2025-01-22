@@ -11,8 +11,8 @@
     <div class="conteiner_7">
         <div class="transactions-page">
             <h2>Transaction</h2>
-             <div class="transactions-container">
-                 <table id="transactionsTable">
+            <div class="transactions-container">
+                <table id="transactionsTable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -21,368 +21,86 @@
                             <th>Description</th>
                             <th>Actions</th>
                         </tr>
-                     </thead>
-                      <tbody>
-                      </tbody>
+                    </thead>
+                    <tbody>
+                    </tbody>
                 </table>
             </div>
-                <h6 style="font-size: medium; text-align: center;">Create transaction</h6>
-                <div id="add-form" class="transaction-form">
-                    <div class="form-group_add">
-                        <label for="amount">Amount:</label>
-                        <input type="number" id="amount" name="amount" required>
-                    </div>
-                    <div class="form-group_add">
-                        <label for="date">Date:</label>
-                        <input type="date" id="date" name="date" required>
-                    </div>
-                    <div class="form-group_add">
-                        <label for="categoryId">Category ID:</label>
-                        <input type="number" id="categoryId" name="categoryId" required>
-                    </div>
-                    <div class="form-group_add">
-                        <label for="description">Description:</label>
-                        <input type="text" id="description" name="description">
-                    </div>
-                     <div id="error" class="error"></div>
-                    <button class="btn_trans" id="addTransaction">Add</button>
+            <h6 style="font-size: medium; text-align: center;">Create transaction</h6>
+            <div id="add-form" class="transaction-form">
+                <div class="form-group_add">
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" name="amount" required>
                 </div>
-                <div id="edit-form" style="display: none;" class="transaction-form">
-                    <input type="hidden" id="editId">
-                     <div class="form-group_add">
-                        <label for="amount_edit">Amount:</label>
-                        <input type="number" id="amount_edit" name="amount_edit" required>
-                    </div>
-                    <div class="form-group_add">
-                        <label for="date_edit">Date:</label>
-                        <input type="date" id="date_edit" name="date_edit" required>
-                    </div>
-                    <div class="form-group_add">
-                        <label for="categoryId_edit">Category ID:</label>
-                        <input type="number" id="categoryId_edit" name="categoryId_edit" required>
-                    </div>
-                    <div class="form-group_add">
-                        <label for="description_edit">Description:</label>
-                        <input type="text" id="description_edit" name="description_edit">
-                    </div>
-                  <div id="error_edit" class="error"></div>
-                 <button class="btn_trans" id="saveEdit">Save</button>
-                    <button class="btn_trans"
-                        onclick="document.getElementById('edit-form').style.display = 'none';">Cancel</button>
+                <div class="form-group_add">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
                 </div>
+                <div class="form-group_add">
+                    <label for="categoryId">Category ID:</label>
+                    <input type="number" id="categoryId" name="categoryId" required>
+                </div>
+                <div class="form-group_add">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description">
+                </div>
+                <div id="error" class="error"></div>
+                <button class="btn_trans" id="addTransaction">Add</button>
             </div>
+            <div id="edit-form" style="display: none;" class="transaction-form">
+                <input type="hidden" id="editId">
+                <div class="form-group_add">
+                    <label for="amount_edit">Amount:</label>
+                    <input type="number" id="amount_edit" name="amount_edit" required>
+                </div>
+                <div class="form-group_add">
+                    <label for="date_edit">Date:</label>
+                    <input type="date" id="date_edit" name="date_edit" required>
+                </div>
+                <div class="form-group_add">
+                    <label for="categoryId_edit">Category ID:</label>
+                    <input type="number" id="categoryId_edit" name="categoryId_edit" required>
+                </div>
+                <div class="form-group_add">
+                    <label for="description_edit">Description:</label>
+                    <input type="text" id="description_edit" name="description_edit">
+                </div>
+                <div id="error_edit" class="error"></div>
+                <button class="btn_trans" id="saveEdit">Save</button>
+                <button class="btn_trans"
+                    onclick="document.getElementById('edit-form').style.display = 'none';">Cancel</button>
+            </div>
+        </div>
     </div>
 
+    <div id="expenses_chart_div"></div>
 
-            <div class="add-category-container">
-                <h3>Добавить категорию</h3>
-                <form id="addCategoryForm">
-                    <div class="form-group">
-                        <label for="categoryName">Название категории:</label>
-                        <input type="text" id="categoryName" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="categoryType">Тип категории:</label>
-                        <select id="categoryType" name="type" required>
-                            <option value="income">Доход</option>
-                            <option value="expense">Расход</option>
-                        </select>
-                    </div>
-                    <div class="add-category-btn">
-                        <button type="submit" class="btn">Добавить</button>
-                        <div id="categoryError" class="error"></div>
-                    </div>
-                </form>
-
-                <h3>Список категорий</h3>
-                <ul id="categoryList"></ul>
+    <div class="add-category-container">
+        <h3>Добавить категорию</h3>
+        <form id="addCategoryForm">
+            <div class="form-group">
+                <label for="categoryName">Название категории:</label>
+                <input type="text" id="categoryName" name="name" required>
             </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const transactionsContainer = document.getElementById('transactions-container');
-                    const addForm = document.getElementById('add-form');
-                    const editForm = document.getElementById('edit-form');
-                    const amountInput = document.getElementById('amount');
-                    const dateInput = document.getElementById('date');
-                    const categoryIdInput = document.getElementById('categoryId');
-                    const descriptionInput = document.getElementById('description');
-                    const errorDiv = document.getElementById('error');
-                    const editIdInput = document.getElementById('editId');
-                    const amountEditInput = document.getElementById('amount_edit');
-                    const dateEditInput = document.getElementById('date_edit');
-                    const categoryIdEditInput = document.getElementById('categoryId_edit');
-                    const descriptionEditInput = document.getElementById('description_edit');
-                    const errorEditDiv = document.getElementById('error_edit')
+            <div class="form-group">
+                <label for="categoryType">Тип категории:</label>
+                <select id="categoryType" name="type" required>
+                    <option value="income">Доход</option>
+                    <option value="expense">Расход</option>
+                </select>
+            </div>
+            <div class="add-category-btn">
+                <button type="submit" class="btn">Добавить</button>
+                <div id="categoryError" class="error"></div>
+            </div>
+        </form>
 
-
-                    // Функция для получения транзакций с сервера
-                    async function fetchTransactions() {
-                        try {
-                            const response = await fetch('/transactions'); //  Запрос на сервер
-                            if (!response.ok) {
-                                throw new Error("Ошибка при получении транзакций: " + response.status); // Выводим ошибку если что то пошло не так
-                            }
-
-                            const transactions = await response.json();  // Получаем транзакции в виде JSON
-
-                            const transactionsTableBody = document.querySelector('#transactionsTable tbody');
-                            transactionsTableBody.innerHTML = '';  // Очищаем таблицу
-
-                            if (transactions.length === 0) {
-                                //  Если транзакций нет, выводим сообщение об этом
-                                transactionsTableBody.innerHTML = "<tr><td colspan='4'>У вас пока нет транзакций</td></tr>";
-                            } else {
-                                //  Если транзакции есть, выводим их на страницу
-                                transactions.forEach(transaction => {
-                                    const row = document.createElement('tr');
-                                    row.innerHTML = `
-                        <td>${transaction.id}</td>
-                        <td>${transaction.amount}</td>
-                        <td>${transaction.date}</td>
-                        <td>${transaction.description}</td>
-                           `;
-                                    transactionsTableBody.appendChild(row); // Добавляем строку в таблицу
-                                });
-                            }
-                        }
-                        catch (error) {
-                            console.error("Ошибка получения транзакций:", error);
-                            alert(error);
-                        }
-                    }
-
-                    function displayTransactions(transactions) {
-                        transactionsContainer.innerHTML = '';
-
-                        transactions.forEach(transaction => {
-                            const transactionDiv = document.createElement('div');
-                            transactionDiv.classList.add('transaction');
-                            transactionDiv.innerHTML = `
-              <p>Amount: ${transaction.amount}</p>
-               <p>Date: ${transaction.date}</p>
-               <p>Category ID: ${transaction.categoryId}</p>
-               <p>Description: ${transaction.description || 'No description'}</p>
-              <button class="edit-btn" data-id="${transaction.id}">Edit</button>
-               <button class="delete-btn" data-id="${transaction.id}">Delete</button>
-               <hr>
-            `;
-                            transactionsContainer.appendChild(transactionDiv);
-                            transactionDiv.querySelector('.delete-btn').addEventListener('click', () => deleteTransaction(transaction.id));
-                            transactionDiv.querySelector('.edit-btn').addEventListener('click', () => editTransaction(transaction.id));
-                        });
-                    }
-
-
-                    async function createTransaction(amount, date, categoryId, description) {
-                        try {
-                            const response = await fetch('/transactions', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    amount,
-                                    categoryId,
-                                    date,
-                                    description
-                                }),
-                            });
-
-                            if (!response.ok) {
-                                const error = await response.json();
-                                throw new Error(error.message);
-                            }
-                            fetchTransactions();
-                        } catch (error) {
-                            alert(error);
-                            console.error('Ошибка при создании транзакции:', error);
-                        }
-                    }
-
-                    document.getElementById('addTransaction').addEventListener('click', async () => {
-
-                        const amount = amountInput.value;
-                        const date = dateInput.value;
-                        const categoryId = categoryIdInput.value;
-                        const description = descriptionInput.value;
-
-                        if (!amount || !date || !categoryId) {
-                            errorDiv.textContent = "Не все обязательные поля заполнены"
-                        }
-
-                        else {
-                            await createTransaction(amount, date, categoryId, description);
-                            amountInput.value = '';
-                            dateInput.value = '';
-                            categoryIdInput.value = '';
-                            descriptionInput.value = '';
-                            errorDiv.textContent = '';
-                        }
-                    });
-
-                    async function deleteTransaction(id) {
-                        try {
-                            const response = await fetch(`/transactions/${id}`, {
-                                method: 'DELETE'
-                            });
-
-                            if (!response.ok) {
-                                const error = await response.json();
-                                throw new Error(error.message);
-                            }
-                            fetchTransactions();
-                        }
-                        catch (error) {
-                            alert(error)
-                            console.error('Ошибка при удалении транзакции:', error)
-                        }
-                    }
-
-                    async function editTransaction(id) {
-                        try {
-                            const response = await fetch(`/transactions/${id}`, {
-                                method: 'GET',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            });
-
-                            if (!response.ok) {
-                                const error = await response.json();
-                                throw new Error(error.message);
-                            }
-
-                            const transaction = await response.json();
-
-                            editForm.style.display = 'block';
-                            editIdInput.value = id;
-                            amountEditInput.value = transaction.amount;
-                            dateEditInput.value = transaction.date;
-                            categoryIdEditInput.value = transaction.categoryId;
-                            descriptionEditInput.value = transaction.description;
-
-                        }
-                        catch (error) {
-                            alert(error);
-                            console.error('Ошибка при получении транзакции:', error);
-                        }
-                    }
-
-                    async function saveEdit(id, amount, date, categoryId, description) {
-                        try {
-                            const response = await fetch(`/transactions/${id}`, {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    amount,
-                                    date,
-                                    categoryId,
-                                    description
-                                })
-                            });
-                            if (!response.ok) {
-                                const error = await response.json();
-                                throw new Error(error.message);
-                            }
-                            fetchTransactions();
-                            document.getElementById('edit-form').style.display = 'none';
-                        }
-                        catch (error) {
-                            alert(error);
-                            console.error('Ошибка при обновлении транзакции:', error)
-                        }
-                    }
-
-                    document.getElementById('saveEdit').addEventListener('click', async () => {
-                        const id = editIdInput.value;
-                        const amount = amountEditInput.value;
-                        const date = dateEditInput.value;
-                        const categoryId = categoryIdEditInput.value;
-                        const description = descriptionEditInput.value;
-
-                        if (!amount || !date || !categoryId) {
-                            errorEditDiv.textContent = "Не все обязательные поля заполнены"
-                        }
-                        else {
-                            await saveEdit(id, amount, date, categoryId, description);
-                            amountEditInput.value = '';
-                            dateEditInput.value = '';
-                            categoryIdEditInput.value = '';
-                            descriptionEditInput.value = '';
-                            errorEditDiv.textContent = '';
-                        }
-                    })
-                    fetchTransactions();
-                    const addCategoryForm = document.getElementById('addCategoryForm');
-                    const categoryList = document.getElementById('categoryList');
-                    const categoryErrorDiv = document.getElementById('categoryError');
-
-                    // Функция для получения и отображения категорий
-                    async function fetchAndDisplayCategories() {
-                        try {
-                            const response = await fetch('/categories', {
-                                method: 'GET',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                            });
-                            if (!response.ok) {
-                                const errorData = await response.json();
-                                console.error('Ошибка при получении категорий:', errorData.message);
-                                categoryErrorDiv.textContent = 'Ошибка при получении категорий: ' + errorData.message;
-                                return;
-                            }
-
-                            const categories = await response.json();
-                            // Очищаем список
-                            categoryList.innerHTML = '';
-                            categories.forEach(category => {
-                                const li = document.createElement('li');
-                                li.textContent = `${category.name} (${category.type})`;
-                                categoryList.appendChild(li);
-                            });
-                        } catch (error) {
-                            console.error('Ошибка при запросе:', error);
-                            categoryErrorDiv.textContent = 'Ошибка сети. Попробуйте позже.';
-                        }
-                    }
-                    fetchAndDisplayCategories();
-
-
-                    // Обработчик отправки формы добавления категории
-                    addCategoryForm.addEventListener('submit', async (event) => {
-                        event.preventDefault();
-                        categoryErrorDiv.textContent = ''; // Сброс ошибок
-                        const formData = new FormData(event.target);
-                        const data = Object.fromEntries(formData);
-
-                        try {
-                            const response = await fetch('/categories', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(data),
-                            });
-
-                            if (response.ok) {
-                                console.log('Категория добавлена');
-                                addCategoryForm.reset();
-                                fetchAndDisplayCategories(); // Обновляем список категорий после добавления
-                            } else {
-                                const errorData = await response.json();
-                                console.error('Ошибка при создании категории:', errorData.message);
-                                categoryErrorDiv.textContent = 'Ошибка создания категории: ' + errorData.message;
-                            }
-                        } catch (error) {
-                            console.error('Ошибка сети:', error);
-                            categoryErrorDiv.textContent = 'Ошибка сети. Попробуйте позже.';
-                        }
-                    });
-                });
-            </script>
-</body>
+        <h3>Список категорий</h3>
+        <ul id="categoryList"></ul>
+    </div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="./profile.js">
+    </script>
+</body> 
 
 </html>

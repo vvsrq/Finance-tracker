@@ -1,7 +1,7 @@
 // src/models/Category.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config.js'); // Импортируем подключение к базе данных
-const User = require('./User'); // Импортируем модель User
+const sequelize = require('../config.js'); 
+const User = require('./User'); 
 
 const Category = sequelize.define('categories', {
   id: {

@@ -1,5 +1,17 @@
 const { and } = require('sequelize');
 const User = require('../models/User');
+const bcrypt = require('bcrypt');
+
+async function hashPassword(password) {
+  try {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    return hashedPassword;
+  } catch (error) {
+    console.error('Ошибка при хешировании пароля:', error);
+    throw error;
+  }
+}
 
 async function createUser(req, res){
     try{
@@ -11,11 +23,13 @@ async function createUser(req, res){
         //     return res.status(400).json({ message: 'Не все поля заполнены!' });
         // }
 
+        const hashedPassword = await hashPassword(password);
+
 
         const newUser = await User.create({
             id,
             name,
-            password,
+            password: hashedPassword,
         });
 
         console.log("Созданный пользователь:", newUser);
@@ -64,4 +78,4 @@ async function logoutUser(req, res) {
     });
 }
 
-module.exports = {createUser, logoutUser }; //getProfile,
+module.exports = {createUser, logoutUser }; 

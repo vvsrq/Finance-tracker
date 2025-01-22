@@ -9,6 +9,9 @@ const usersRoutes = require('./routes/users.js');
 const loginRoutes = require('./routes/login.js')
 const transactionsRoutes = require('./routes/transactions');
 const categoriesRoutes = require('./routes/categories');
+const dotenv = require('dotenv');
+
+// require('dotenv').config({ path: path.join(__dirname, '..','.env') });
 
 const app = express();
 app.use(express.json());
@@ -28,7 +31,7 @@ app.use(session({
   },
 }));
 
-app.use('/users.js', usersRoutes);
+app.use('/users', usersRoutes);
 app.use('/login.js', loginRoutes);
 app.use('/transactions', transactionsRoutes);
 app.use('/categories', categoriesRoutes);
