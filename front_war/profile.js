@@ -224,6 +224,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoryList = document.getElementById('categoryList');
     const categoryErrorDiv = document.getElementById('categoryError');
 
+    const categoryReportTableBody = document.querySelector('#categoryReportTable tbody');
+   const reportErrorDiv = document.getElementById('reportError');
+
+     async function fetchAndDisplayCategoryReport() {
+            try {
+                  const response = await fetch('/reports/category', {
+                     method: 'GET',
+                      headers: {
+                          'Content-Type': 'application/json'
+                       }
+                  });
+                if (!response.ok) {
+                        const errorData = await response.json();
+                         console.error('Ошибка при получении отчета по категориям:', errorData.message);
+                         reportErrorDiv.textContent = 'Ошибка при получении отчета по категориям: ' + errorData.message;
+                        return;
+                   }
+                    const report = await response.json();
+
+                   // Очищаем таблицу
+                   categoryReportTableBody.innerHTML = '';
+                      if (report.length === 0) {
+                            categoryReportTableBody.innerHTML = "<tr><td colspan='4'>Нет данных для отчета</td></tr>";
+                        }
+                    else {
+                           report.forEach(categoryData => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>${categoryData.categoryId}</td>
+                                    <td>${categoryData.categoryName}</td>
+                                     <td>${categoryData.categoryType}</td>
+                                     <td>${categoryData.totalAmount}</td>
+                                 `;
+                                categoryReportTableBody.appendChild(row);
+                         });
+                   }
+              } catch (error) {
+                console.error('Ошибка при запросе:', error);
+                   reportErrorDiv.textContent = 'Ошибка сети. Попробуйте позже.';
+              }
+        }
+
     // Функция для получения и отображения категорий
     async function fetchAndDisplayCategories() {
         try {
@@ -254,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     fetchAndDisplayCategories();
+    fetchAndDisplayCategoryReport();
 
 
     

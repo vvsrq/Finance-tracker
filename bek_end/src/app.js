@@ -9,6 +9,7 @@ const usersRoutes = require('./routes/users.js');
 const loginRoutes = require('./routes/login.js')
 const transactionsRoutes = require('./routes/transactions');
 const categoriesRoutes = require('./routes/categories');
+const reportsRoutes = require('./routes/reports');
 const dotenv = require('dotenv');
 
 // require('dotenv').config({ path: path.join(__dirname, '..','.env') });
@@ -35,6 +36,7 @@ app.use('/users', usersRoutes);
 app.use('/login.js', loginRoutes);
 app.use('/transactions', transactionsRoutes);
 app.use('/categories', categoriesRoutes);
+app.use('/reports', reportsRoutes)
 
 app.use(express.static(path.join(__dirname, '..', '..', 'front_war')));
 

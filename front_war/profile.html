@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Профиль пользователя</title>
+    <link rel="stylesheet" href="./profile.css">
 </head>
 
 <body>
@@ -97,6 +98,25 @@
 
         <h3>Список категорий</h3>
         <ul id="categoryList"></ul>
+
+        
+    </div>
+    <div class="category-report-container">
+        <h3>Отчет по категориям</h3>
+        <table id="categoryReportTable">
+              <thead>
+                  <tr>
+                      <th>Category ID</th>
+                      <th>Category Name</th>
+                      <th>Category Type</th>
+                      <th>Total Amount</th>
+                  </tr>
+              </thead>
+             <tbody>
+                
+              </tbody>
+          </table>
+          <div id="reportError" class="error"></div>
     </div>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="./profile.js">
