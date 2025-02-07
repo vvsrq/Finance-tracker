@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройка 2FA</title>
+    <link rel="stylesheet" href="./2fa_page.css">
+</head>
+<body>
+    <!-- Сайдбар -->
+    <div class="sidebar" id="sidebar">
+        <h2>Menu</h2>
+        <button id="closeSidebarBtn">Close Sidebar</button>
+        <button>My Account</button>
+        <button>My Wallet</button>
+        <button>2FA Settings</button>
+    </div>
+
+    <div class="buttonM">
+        <div class="header">
+            <button class="menu-button" id="openSidebarBtn">☰</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Настройка двухфакторной аутентификации</h1>
+
+        <div id="twoFactorAuthContainer">
+            <p>Сгенерировать код и qr для подключения через GOOGLE Authenticator</p>
+            <button id="getCode">Получить ключ</button>
+            <div id="qrCode"></div>
+            <p>Или введите этот код вручную в приложении Authenticator:</p>
+            <p id="secretKey"></p>
+            <label for="verificationCode">Код подтверждения из приложения:</label>
+            <input type="text" id="verificationCode" name="verificationCode">
+            <button id="enable2FAButton">Включить 2FA</button>
+            <div id="twoFactorAuthError" class="error"></div>
+        </div>
+    </div>
+
+    <script src="2fa_page.js"></script>
+</body>
+</html>

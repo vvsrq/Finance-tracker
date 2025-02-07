@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculators</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            position: fixed;
+            left: -250px;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: left 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .sidebar button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .sidebar button:hover {
+            background: #e9ecef;
+        }
+
+        /* Menu button styles */
+        .buttonM {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 900;
+        }
+
+        .menu-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .menu-button:hover {
+            background: #0056b3;
+        }
+
+        /* Rest of the existing styles */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin-left: 60px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: #fff;
+            border: none;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .tab.active {
+            background: #007bff;
+            color: white;
+        }
+
+        .calculator {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .calculator.active {
+            display: block;
+        }
+
+        .display {
+            width: 100%;
+            padding: 10px;
+            font-size: 24px;
+            text-align: right;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            background: #e9ecef;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background: #dee2e6;
+        }
+
+        button.operator {
+            background: #007bff;
+            color: white;
+        }
+
+        button.operator:hover {
+            background: #0056b3;
+        }
+
+        button.equals {
+            background: #28a745;
+            color: white;
+        }
+
+        button.equals:hover {
+            background: #218838;
+        }
+
+        button.clear {
+            background: #dc3545;
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        button.clear:hover {
+            background: #c82333;
+        }
+
+        .compound-calculator input,
+        .compound-calculator select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+
+        .compound-calculator label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h2>Menu</h2>
+        <button onclick="closeSidebar()">Close Sidebar</button>
+        <button>My Account</button>
+        <button>My Wallet</button>
+        <button>Calculator</button>
+    </div>
+
+    <!-- Menu Button -->
+    <div class="buttonM">
+        <div class="header">
+            <button class="menu-button" onclick="openSidebar()">☰</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab active" data-tab="standard">Стандартный калькулятор</button>
+            <button class="tab" data-tab="compound">Калькулятор сложных процентов</button>
+        </div>
+
+        <div class="calculator active" id="standard">
+            <input type="text" class="display" id="standardDisplay" readonly value="0">
+            <div class="buttons">
+                <button onclick="appendNumber('7')">7</button>
+                <button onclick="appendNumber('8')">8</button>
+                <button onclick="appendNumber('9')">9</button>
+                <button class="operator" onclick="setOperation('/')">/</button>
+                
+                <button onclick="appendNumber('4')">4</button>
+                <button onclick="appendNumber('5')">5</button>
+                <button onclick="appendNumber('6')">6</button>
+                <button class="operator" onclick="setOperation('*')">×</button>
+                
+                <button onclick="appendNumber('1')">1</button>
+                <button onclick="appendNumber('2')">2</button>
+                <button onclick="appendNumber('3')">3</button>
+                <button class="operator" onclick="setOperation('-')">-</button>
+                
+                <button onclick="appendNumber('0')">0</button>
+                <button onclick="appendNumber('.')">.</button>
+                <button class="equals" onclick="calculate()">=</button>
+                <button class="operator" onclick="setOperation('+')">+</button>
+                
+                <button class="clear" onclick="clearDisplay()">Clear</button>
+            </div>
+        </div>
+
+        <div class="calculator" id="compound">
+            <div class="compound-calculator">
+                <label>Начальная сумма ($)</label>
+                <input type="number" id="principal" placeholder="Введите начальную сумму">
+                
+                <label>Годовая процентная ставка (%)</label>
+                <input type="number" id="rate" placeholder="Введите процентную ставку">
+                
+                <label>Срок (лет)</label>
+                <input type="number" id="time" placeholder="Введите количество лет">
+                
+                <label>Периодичность начисления процентов</label>
+                <select id="frequency">
+                    <option value="1">Ежегодно</option>
+                    <option value="2">Раз в полгода</option>
+                    <option value="4">Ежеквартально</option>
+                    <option value="12">Ежемесячно</option>
+                    <option value="365">Ежедневно</option>
+                </select>
+                
+                <button onclick="calculateCompound()" class="operator">Рассчитать</button>
+                <button onclick="clearCompound()" class="clear">Очистить</button>
+                
+                <div class="result" id="result">
+                    <h3>Результаты:</h3>
+                    <p>Итоговая сумма: $<span id="finalAmount">0</span></p>
+                    <p>Начисленные проценты: $<span id="totalInterest">0</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar functions
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('active');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('active');
+        }
+
+        // Calculator functions
+        let currentNumber = '0';
+        let previousNumber = null;
+        let operation = null;
+        let newNumber = true;
+
+        function updateDisplay() {
+            document.getElementById('standardDisplay').value = currentNumber;
+        }
+
+        function appendNumber(num) {
+            if (newNumber) {
+                currentNumber = num;
+                newNumber = false;
+            } else {
+                currentNumber += num;
+            }
+            updateDisplay();
+        }
+
+        function setOperation(op) {
+            if (previousNumber === null) {
+                previousNumber = parseFloat(currentNumber);
+            } else if (!newNumber) {
+                calculate();
+            }
+            operation = op;
+            newNumber = true;
+        }
+
+        function calculate() {
+            if (operation === null || newNumber) return;
+            
+            const prev = previousNumber;
+            const current = parseFloat(currentNumber);
+            let result;
+
+            switch (operation) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    result = prev / current;
+                    break;
+            }
+
+            currentNumber = result.toString();
+            previousNumber = result;
+            newNumber = true;
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentNumber = '0';
+            previousNumber = null;
+            operation = null;
+            newNumber = true;
+            updateDisplay();
+        }
+
+        function calculateCompound() {
+            const principal = parseFloat(document.getElementById('principal').value);
+            const rate = parseFloat(document.getElementById('rate').value) / 100;
+            const time = parseFloat(document.getElementById('time').value);
+            const frequency = parseFloat(document.getElementById('frequency').value);
+
+            if (principal && rate && time && frequency) {
+                const amount = principal * Math.pow(1 + rate/frequency, frequency * time);
+                const interest = amount - principal;
+
+                document.getElementById('finalAmount').textContent = amount.toFixed(2);
+                document.getElementById('totalInterest').textContent = interest.toFixed(2);
+                document.getElementById('result').style.display = 'block';
+            }
+        }
+
+        function clearCompound() {
+            document.getElementById('principal').value = '';
+            document.getElementById('rate').value = '';
+            document.getElementById('time').value = '';
+            document.getElementById('frequency').value = '12';
+            document.getElementById('result').style.display = 'none';
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.calculator').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

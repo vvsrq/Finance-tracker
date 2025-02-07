@@ -1,0 +1,168 @@
+body {
+    background-color: #eeeae4;
+    color: #0a223a;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.sidebar {
+    position: fixed;
+    left: -250px;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background-color: white;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar h2 {
+    color: #0a223a;
+    margin-bottom: 20px;
+}
+
+.sidebar button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #eeeae4;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: left;
+    color: #0a223a;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar button:hover {
+    background: #ddd8d2;
+}
+
+.buttonM {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 900;
+}
+
+.menu-button {
+    background: #0a223a;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.menu-button:hover {
+    background: #153454;
+}
+
+.container {
+    background-color: white;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 24px rgba(10, 34, 58, 0.1);
+    max-width: 600px;
+    width: 90%;
+    margin: 20px;
+    margin-left: 80px;
+}
+
+h1 {
+    color: #0a223a;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+p {
+    margin: 1rem 0;
+    line-height: 1.5;
+}
+
+button {
+    background-color: #0a223a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin: 1rem 0;
+}
+
+button:hover {
+    background-color: #153454;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #eeeae4;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin: 0.5rem 0 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #0a223a;
+}
+
+#qrCode {
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1rem;
+    background-color: #eeeae4;
+    border-radius: 8px;
+}
+
+#secretKey {
+    background-color: #eeeae4;
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: center;
+    font-family: monospace;
+    font-size: 1.2rem;
+    word-break: break-all;
+}
+
+.error {
+    color: #dc3545;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    display: none;
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1.5rem;
+        margin: 10px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}

@@ -1,6 +1,11 @@
 const { and } = require('sequelize');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const speakeasy = require('speakeasy');
+const QRCode = require('qrcode');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname,'../../../../.env') })
 
 async function hashPassword(password) {
   try {
@@ -37,9 +42,18 @@ async function createUser(req, res){
         req.session.userName = newUser.name;
         console.log(req.session)
 
-
-        res.status(201).json({ message: 'Пользователь успешно создан' });
-        
+        const payload = {
+          userId: newUser.id,
+          userName: newUser.name,
+        };
+         const secretKey = process.env.JWT_SECRET || 'your_secret_key';
+          const options = {
+                expiresIn: '24h',
+           };
+        const token = jwt.sign(payload, secretKey, options);
+    
+        console.log(token)
+        res.status(201).json({ message: 'Пользователь успешно создан',token });
     }
 
     catch (error) {
@@ -49,6 +63,41 @@ async function createUser(req, res){
       }
       res.status(500).json({ message: 'Ошибка сервера' });
     }
+}
+
+async function enable2FA(req, res) {
+  try {
+      const userId = req.user.userId;
+      const user = await User.findByPk(userId);
+
+      if (!user) {
+          return res.status(404).json({ message: 'Пользователь не найден' });
+      }
+
+      // Генерируем секретный ключ
+      const secret = speakeasy.generateSecret({ length: 20 });
+
+      // Создаем QR-код
+      QRCode.toDataURL(secret.otpauth_url, async function (err, data_url) {
+          if (err) {
+              console.error('Ошибка при создании QR-кода:', err);
+              return res.status(500).json({ message: 'Ошибка при создании QR-кода' });
+          }
+
+          // Сохраняем секретный ключ в базу данных
+          user.secret2FAKey = secret.base32;
+          await user.save();
+
+          res.status(200).json({
+              message: '2FA включен',
+              qrCode: data_url,
+              secret: secret.base32 // Отдаем секрет для отладки (в production убрать!)
+          });
+      });
+  } catch (error) {
+      console.error('Ошибка при включении 2FA:', error);
+      res.status(500).json({ message: 'Ошибка сервера' });
+  }
 }
 
 
@@ -78,4 +127,4 @@ async function logoutUser(req, res) {
     });
 }
 
-module.exports = {createUser, logoutUser }; 
+module.exports = {createUser, logoutUser, enable2FA }; 

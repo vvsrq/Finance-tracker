@@ -18,16 +18,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Функция для получения транзакций с сервера
     async function fetchTransactions() {
         try {
-            const response = await fetch('/transactions'); 
+            const token = localStorage.getItem('token');
+            console.log(token);
+            const response = await fetch('/transactions', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             if (!response.ok) {
-                throw new Error("Ошибка при получении транзакций: " + response.status); 
+                throw new Error("Ошибка при получении транзакций: " + response.status);
             }
 
-            const transactions = await response.json();  
-            
+            const transactions = await response.json();
+
 
             const transactionsTableBody = document.querySelector('#transactionsTable tbody');
-            transactionsTableBody.innerHTML = '';  
+            transactionsTableBody.innerHTML = '';
 
             if (transactions.length === 0) {
                 transactionsTableBody.innerHTML = "<tr><td colspan='5'>У вас пока нет транзакций</td></tr>";
@@ -44,9 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
                   <button class="delete-btn" data-id="${transaction.id}">Delete</button>
                  </td>
                    `;
-                    transactionsTableBody.appendChild(row); 
-                     row.querySelector('.delete-btn').addEventListener('click', () => deleteTransaction(transaction.id));
-                   row.querySelector('.edit-btn').addEventListener('click', () => editTransaction(transaction.id));
+                    transactionsTableBody.appendChild(row);
+                    row.querySelector('.delete-btn').addEventListener('click', () => deleteTransaction(transaction.id));
+                    row.querySelector('.edit-btn').addEventListener('click', () => editTransaction(transaction.id));
                 });
             }
         }
@@ -80,10 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function createTransaction(amount, date, categoryId, description) {
         try {
+            const token = localStorage.getItem('token');
             const response = await fetch('/transactions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     amount,
@@ -127,9 +137,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function deleteTransaction(id) {
         try {
+            const token = localStorage.getItem('token');
             const response = await fetch(`/transactions/${id}`, {
-                method: 'DELETE'
-            });
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+            }});
 
             if (!response.ok) {
                 const error = await response.json();
@@ -225,54 +239,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoryErrorDiv = document.getElementById('categoryError');
 
     const categoryReportTableBody = document.querySelector('#categoryReportTable tbody');
-   const reportErrorDiv = document.getElementById('reportError');
+    const reportErrorDiv = document.getElementById('reportError');
 
-     async function fetchAndDisplayCategoryReport() {
-            try {
-                  const response = await fetch('/reports/category', {
-                     method: 'GET',
-                      headers: {
-                          'Content-Type': 'application/json'
-                       }
-                  });
-                if (!response.ok) {
-                        const errorData = await response.json();
-                         console.error('Ошибка при получении отчета по категориям:', errorData.message);
-                         reportErrorDiv.textContent = 'Ошибка при получении отчета по категориям: ' + errorData.message;
-                        return;
-                   }
-                    const report = await response.json();
+    async function fetchAndDisplayCategoryReport() {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch('/reports/category', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
 
-                   // Очищаем таблицу
-                   categoryReportTableBody.innerHTML = '';
-                      if (report.length === 0) {
-                            categoryReportTableBody.innerHTML = "<tr><td colspan='4'>Нет данных для отчета</td></tr>";
-                        }
-                    else {
-                           report.forEach(categoryData => {
-                                const row = document.createElement('tr');
-                                row.innerHTML = `
+                }
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Ошибка при получении отчета по категориям:', errorData.message);
+                reportErrorDiv.textContent = 'Ошибка при получении отчета по категориям: ' + errorData.message;
+                return;
+            }
+            const report = await response.json();
+
+            // Очищаем таблицу
+            categoryReportTableBody.innerHTML = '';
+            if (report.length === 0) {
+                categoryReportTableBody.innerHTML = "<tr><td colspan='4'>Нет данных для отчета</td></tr>";
+            }
+            else {
+                report.forEach(categoryData => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
                                     <td>${categoryData.categoryId}</td>
                                     <td>${categoryData.categoryName}</td>
                                      <td>${categoryData.categoryType}</td>
                                      <td>${categoryData.totalAmount}</td>
                                  `;
-                                categoryReportTableBody.appendChild(row);
-                         });
-                   }
-              } catch (error) {
-                console.error('Ошибка при запросе:', error);
-                   reportErrorDiv.textContent = 'Ошибка сети. Попробуйте позже.';
-              }
+                    categoryReportTableBody.appendChild(row);
+                });
+            }
+        } catch (error) {
+            console.error('Ошибка при запросе:', error);
+            reportErrorDiv.textContent = 'Ошибка сети. Попробуйте позже.';
         }
+    }
 
     // Функция для получения и отображения категорий
     async function fetchAndDisplayCategories() {
         try {
+            const token = localStorage.getItem('token');
             const response = await fetch('/categories', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
             });
             if (!response.ok) {
@@ -299,18 +318,20 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchAndDisplayCategoryReport();
 
 
-    
+
     addCategoryForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        categoryErrorDiv.textContent = ''; 
+        categoryErrorDiv.textContent = '';
         const formData = new FormData(event.target);
         const data = Object.fromEntries(formData);
 
         try {
+            const token = localStorage.getItem('token');
             const response = await fetch('/categories', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(data),
             });
@@ -318,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 console.log('Категория добавлена');
                 addCategoryForm.reset();
-                fetchAndDisplayCategories(); 
+                fetchAndDisplayCategories();
             } else {
                 const errorData = await response.json();
                 console.error('Ошибка при создании категории:', errorData.message);
@@ -330,55 +351,64 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     google.charts.load('current', { 'packages': ['corechart'] });
-google.charts.setOnLoadCallback(drawExpensesChart);
+    google.charts.setOnLoadCallback(drawExpensesChart);
 
 
-async function drawExpensesChart() {
-try {
-const response = await fetch('/categories', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
+    async function drawExpensesChart() {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch('/categories', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при получении категорий: ' + response.status);
+            }
+
+            const categories = await response.json();
+
+            const responseTrans = await fetch('/transactions', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!responseTrans.ok) {
+                throw new Error('Ошибка при получении транзакций: ' + responseTrans.status);
+            }
+
+            const transactions = await responseTrans.json();
+
+            const expenses = transactions.filter(transaction => {
+                const category = categories.find(cat => cat.id === transaction.categoryId);
+                return category && category.type === 'expense';
+            });
+
+            const data = new google.visualization.DataTable();
+            data.addColumn('string', 'Date');
+            data.addColumn('number', 'Amount');
+
+            expenses.forEach(transaction => {
+                data.addRow([transaction.date, parseFloat(transaction.amount)]);
+            });
+
+            const options = {
+                title: 'График расходов',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            const chart = new google.visualization.PieChart(document.getElementById('expenses_chart_div'));
+            chart.draw(data, options);
+
+        } catch (error) {
+            console.error('Ошибка при получении данных для графика:', error);
         }
- });
-
-  if (!response.ok) {
-    throw new Error('Ошибка при получении категорий: ' + response.status);
-   }
-
-  const categories = await response.json();
-
-  const responseTrans = await fetch('/transactions');
-  if (!responseTrans.ok) {
-      throw new Error('Ошибка при получении транзакций: ' + responseTrans.status);
-   }
-
-   const transactions = await responseTrans.json();
-
-  const expenses = transactions.filter(transaction => {
-    const category = categories.find(cat => cat.id === transaction.categoryId);
-  return category && category.type === 'expense';
-});
-
-const data = new google.visualization.DataTable();
-    data.addColumn('string', 'Date');
-    data.addColumn('number', 'Amount');
-
-    expenses.forEach(transaction => {
-     data.addRow([transaction.date, parseFloat(transaction.amount)]);
-    });
-
-const options = {
-    title: 'График расходов',
-   curveType: 'function',
-     legend: { position: 'bottom' }
-};
-
-const chart = new google.visualization.PieChart(document.getElementById('expenses_chart_div'));
-  chart.draw(data, options);
-
- } catch (error) {
-    console.error('Ошибка при получении данных для графика:', error);
- }
-}
+    }
 });

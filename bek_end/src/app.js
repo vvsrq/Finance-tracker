@@ -21,14 +21,14 @@ app.use(express.urlencoded({ extended: true }));
 const secret = crypto.randomBytes(32).toString('base64');
 
 app.use(session({
-  secret, 
-  resave: false, 
-  saveUninitialized: false, 
-  cookie: { 
-    secure: process.env.NODE_ENV === 'production', 
-    maxAge: 24 * 60 * 60 * 1000, 
-    httpOnly: true, 
-    sameSite: 'strict', 
+  secret,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    sameSite: 'strict',
   },
 }));
 
@@ -45,14 +45,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', '..', 'front_war', 'main.html'));
 });
 
+app.get('/2fa', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', '..', 'front_war', '2fa_page.html'));
+});
 
-
-app.get('/users-page',(req,res)=>{
+app.get('/users-page', (req, res) => {
   res.sendFile(path.join(__dirname, '..', '..', 'front_war', 'users_page.html'));
 }
 )
 
-app.get('/profile',(req,res)=>{
+app.get('/profile', (req, res) => {
   res.sendFile(path.join(__dirname, '..', '..', 'front_war', 'profile.html'));
 }
 )
@@ -75,4 +77,5 @@ const PORT = 3000;
 
 
 app.listen(PORT, () => {
-console.log(` http://localhost:${PORT}`);})
+  console.log(` http://localhost:${PORT}`);
+})

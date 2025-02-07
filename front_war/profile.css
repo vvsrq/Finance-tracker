@@ -15,3 +15,17 @@ body{
     
     flex-direction: row;
 }
+
+.expenses_chart_div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    height: 100%;
+}

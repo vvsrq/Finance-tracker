@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const categoriesController = require('../controllers/categoriesController');
-const authMiddleware = require('../middleware/authMiddleware'); // Защищаем маршруты
+const authMiddleware = require('../middleware/authMiddleware'); 
 
 router.get('/', authMiddleware, categoriesController.getAllCategories);
 

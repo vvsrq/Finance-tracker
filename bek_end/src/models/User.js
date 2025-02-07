@@ -24,6 +24,10 @@ const User = sequelize.define('User', {
       len: [6, 100], 
     }
   },
+  secret2FAKey: {
+    type: DataTypes.STRING,
+    allowNull: true, 
+    }
 });
 
 module.exports = User;

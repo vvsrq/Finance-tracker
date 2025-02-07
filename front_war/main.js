@@ -8,13 +8,13 @@ const closeBtns = document.querySelector('.btnsC');
 
 // Обработчик для показа формы
 showLoginBtn.addEventListener('click', () => {
-    loginFormContainer.style.display = 'flex'; 
+  loginFormContainer.style.display = 'flex';
 });
 
 // Обработчик для скрытия формы
 closeBtn.addEventListener('click', (event) => {
-    event.preventDefault(); 
-    loginFormContainer.style.display = 'none'; 
+  event.preventDefault();
+  loginFormContainer.style.display = 'none';
 });
 
 
@@ -28,27 +28,31 @@ closeBtns.addEventListener('click', (event) => {
 });
 
 document.getElementById('loginForm').addEventListener('submit', async (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData);
+  const formData = new FormData(event.target);
+  const data = Object.fromEntries(formData);
 
-    try {
-    const response = await fetch('/users', { 
+  try {
+    const response = await fetch('/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data), 
+      body: JSON.stringify(data),
     });
 
     if (response.ok) {
       console.log('Регистрация успешна');
-      
+      const data = await response.json();
+      const token = data.token;
+      console.log("Получен токен:", token);
+      localStorage.setItem('token', token);
+
     } else {
       const errorData = await response.json();
       console.error('Ошибка регистрации:', errorData.message);
-      alert('Ошибка регистрации: ' + errorData.message); 
+      alert('Ошибка регистрации: ' + errorData.message);
     }
   } catch (error) {
     console.error('Ошибка сети:', error);
@@ -61,25 +65,34 @@ document.getElementById('signinForm').addEventListener('submit', async (event) =
   const formData = new FormData(event.target);
   const data = Object.fromEntries(formData);
   const errorDiv = document.getElementById('error');
+  const token2FAContainer = document.getElementById('token2FAContainer');
 
   try {
-  const response = await fetch('/login.js', {
+    const response = await fetch('/login.js', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-  });
-  if (response.ok) {
-    console.log('Регистрация успешна');
+    });
+    if (response.ok) {
+      console.log('Регистрация успешна');
+      const data = await response.json();
+      const token = data.token;
+      console.log("Получен токен:", token);
+      localStorage.setItem('token', token);
       window.location.href = '/profile';
-      } else {
-    const errorData = await response.json();
+    } else {
+      const errorData = await response.json();
+      if (errorData.requires2FA) {
+        console.log("Необходимо ввести код 2FA");
+               token2FAContainer.style.display = 'block'; 
+         }
       console.error('Ошибка регистрации:', errorData.message);
       errorDiv.textContent = 'Ошибка регистрации: ' + errorData.message;
-      }
-} catch (error) {
-  console.error('Ошибка сети:', error);
-  errorDiv.textContent = 'Ошибка сети. Попробуйте позже.';
-}
+    }
+  } catch (error) {
+    console.error('Ошибка сети:', error);
+    errorDiv.textContent = 'Ошибка сети. Попробуйте позже.';
+  }
 });
