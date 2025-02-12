@@ -88,6 +88,7 @@ async function loginUser(req, res) {
       expiresIn: '24h',
     };
     const token = jwt.sign(payload, secretKey, options);
+    console.log('Получен токен:', token);
 
     res.status(200).json({ message: 'Вход выполнен успешно', token });
   } catch (error) {

@@ -3,7 +3,7 @@ const path = require('path');
 const Session = require('../models/Session');
 require('dotenv').config({ path: path.join(__dirname, '../../../../.env') })
 
-function authMiddleware(req, res, next) {
+async function authMiddleware(req, res, next) {
   const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
   console.log('hello');
 
@@ -14,18 +14,23 @@ function authMiddleware(req, res, next) {
   try {
     const secretKey = process.env.JWT_SECRET || 'your_secret_key';
     const decoded = jwt.verify(token, secretKey);
-    console.log('hello world');
+    console.log("Decoded токен:", decoded);
+    console.log( decoded.userId);
 
-    // const session = await Session.findOne({ where: { id: decoded.sessionId, userId: decoded.userId } });
-    // console.log(session);
 
-    // if (!session) {
-    //   return res.status(401).json({ message: 'Сессия не найдена, пожалуйста авторизуйтесь' });
-    // }
+    const session = await Session.findOne({ where: { userId: decoded.userId } });
+    console.log(session);
+
+    if (!session) {
+      console.log('Сессия не найдена, пожалуйста авторизуйтесь');
+      return res.status(401).json({ message: 'Сессия не найдена, пожалуйста авторизуйтесь' });
+    }
 
     req.user = decoded;
+    console.log("Decoded токен:", decoded);
     next();
   } catch (error) {
+    console.log('hello loshara');
     return res.status(401).json({ message: 'Неверный токен' });
   }
 }

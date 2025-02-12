@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoryIdEditInput = document.getElementById('categoryId_edit');
     const descriptionEditInput = document.getElementById('description_edit');
     const errorEditDiv = document.getElementById('error_edit')
+    const token = localStorage.getItem('token');
+
 
 
     // Функция для получения транзакций с сервера
@@ -143,7 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
-            }});
+                }
+            });
 
             if (!response.ok) {
                 const error = await response.json();
@@ -162,7 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(`/transactions/${id}`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
 
@@ -192,7 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(`/transactions/${id}`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     amount,
