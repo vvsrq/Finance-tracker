@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 
 async function getCategoryReport(req, res) {
     try {
-        const userId = req.session.userId;
+        const userId = req.user.userId;
 
         const categories = await Category.findAll({
             where: { userId },
@@ -38,7 +38,7 @@ async function getCategoryReport(req, res) {
 
 async function getMonthlyReport(req, res) {
       try {
-           const userId = req.session.userId;
+        const userId = req.user.userId;
 
             const currentDate = new Date();
              const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);

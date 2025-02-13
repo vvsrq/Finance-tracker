@@ -4,7 +4,7 @@ const Category = require('../models/Category');
 // Получить все категории
 async function getAllCategories(req, res) {
     try {
-        const userId = req.session.userId;
+        const userId = req.user.userId;
         const categories = await Category.findAll({ where: { userId } });
         res.status(200).json(categories);
     } catch (error) {
@@ -17,7 +17,7 @@ async function getAllCategories(req, res) {
 async function createCategory(req, res) {
     try {
         const { name, type } = req.body;
-        const userId = req.session.userId;
+        const userId = req.user.userId;
         console.log(userId);
 
         if (!name || !type) {
@@ -35,7 +35,7 @@ async function createCategory(req, res) {
 async function getCategoryById(req, res) {
     try {
         const id = req.params.id;
-        const userId = req.session.userId;
+        const userId = req.user.userId;
         const category = await Category.findOne({ where: { id, userId } });
         if (!category) {
             return res.status(404).json({ message: 'Категория не найдена' });
@@ -51,7 +51,7 @@ async function getCategoryById(req, res) {
 async function updateCategory(req, res) {
     try {
         const id = req.params.id;
-        const userId = req.session.userId;
+        const userId = req.user.userId;
         const { name, type } = req.body;
         const category = await Category.findOne({ where: { id, userId } });
         if (!category) {
@@ -70,7 +70,7 @@ async function updateCategory(req, res) {
 async function deleteCategory(req, res) {
     try {
         const id = req.params.id;
-        const userId = req.session.userId;
+        const userId = req.user.userId;
         const category = await Category.findOne({ where: { id, userId } });
         if (!category) {
             return res.status(404).json({ message: 'Категория не найдена' });

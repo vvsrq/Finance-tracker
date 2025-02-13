@@ -5,7 +5,7 @@ async function getAllTransactions(req, res) {
     try {
      console.log("getAllTransactions: запрос получен") 
 
-        const userId = req.session.userId;
+        const userId = req.user.userId;
         console.log("userId", req.session.userId); 
 
         const transactions = await Transaction.findAll({ where: { userId } });
@@ -22,7 +22,7 @@ async function getAllTransactions(req, res) {
 async function createTransaction(req, res) {
     try {
         const { amount, date, categoryId,  description } = req.body;
-        const userId = req.session.userId;
+        const userId = req.user.userId;
         console.log(req.body)
         if (!amount || !categoryId || !date) {
             return res.status(400).json({ message: 'Необходимые поля отсутствуют' });
@@ -45,7 +45,7 @@ async function createTransaction(req, res) {
 // Получение транзакции по ID
 async function getTransactionById(req, res) {
   try {
-      const userId = req.session.userId;
+    const userId = req.user.userId;
         const transaction = await Transaction.findOne({
       where: {
         id: req.params.id,
@@ -67,7 +67,7 @@ async function getTransactionById(req, res) {
 // Обновление транзакции по ID
 async function updateTransactionById(req, res) {
   try {
-       const userId = req.session.userId;
+    const userId = req.user.userId;
          const transaction = await Transaction.findOne({
       where: {
         id: req.params.id,
@@ -98,7 +98,7 @@ async function updateTransactionById(req, res) {
 // Удаление транзакции по ID
 async function deleteTransactionById(req, res) {
   try {
-       const userId = req.session.userId;
+    const userId = req.user.userId;
     const transaction = await Transaction.findOne({
       where: {
         id: req.params.id,
