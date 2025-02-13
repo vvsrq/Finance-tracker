@@ -4,7 +4,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "test": "mocha **/*.js --exit"
   },
   "keywords": [],
   "author": "",
