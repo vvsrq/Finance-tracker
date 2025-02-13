@@ -10,10 +10,10 @@
     <!-- Сайдбар -->
     <div class="sidebar" id="sidebar">
         <h2>Menu</h2>
-        <button id="closeSidebarBtn">Close Sidebar</button>
-        <button>My Account</button>
-        <button>My Wallet</button>
-        <button>2FA Settings</button>
+        <button onclick="closeSidebar()">Close Sidebar</button>
+        <button onclick="main()">Main page</button>
+        <button onclick="FA()">Add 2FA</button>
+        <button onclick="calc()">Calculator</button>
     </div>
 
     <div class="buttonM">
@@ -37,7 +37,7 @@
             <div id="twoFactorAuthError" class="error"></div>
         </div>
     </div>
-
+    <script src="users_accaunt.js"></script>
     <script src="2fa_page.js"></script>
 </body>
 </html>

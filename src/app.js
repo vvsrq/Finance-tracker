@@ -49,10 +49,10 @@ app.get('/2fa', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'front_war', '2fa_page.html'));
 });
 
-app.get('/users-page', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'front_war', 'users_page.html'));
-}
-)
+app.get('/calc', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'front_war', 'calc.html'));
+});
+
 
 app.get('/profile', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'front_war', 'profile.html'));

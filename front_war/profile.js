@@ -406,8 +406,38 @@ document.addEventListener('DOMContentLoaded', () => {
             const options = {
                 title: 'График расходов',
                 curveType: 'function',
-                legend: { position: 'bottom' }
+                legend: { position: 'bottom' },
+                backgroundColor: '#f8f9fa',
+                chartArea: {
+                    width: '90%',
+                    height: '90%'
+                },
+                colors: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'],
+                fontSize: 14,
+                fontName: 'Arial',
+                legend: {
+                    alignment: 'center',
+                    position: 'right',
+                    textStyle: {
+                        color: '#333',
+                        fontSize: 14
+                    }
+                },
+                pieHole: 0.4,
+                pieSliceText: 'percentage',
+                pieSliceTextStyle: {
+                    color: 'white',
+                    fontSize: 14
+                },
+                tooltip: {
+                    showColorCode: true,
+                    textStyle: {
+                        fontSize: 13
+                    }
+                }
             };
+
+
 
             const chart = new google.visualization.PieChart(document.getElementById('expenses_chart_div'));
             chart.draw(data, options);
