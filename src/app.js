@@ -38,24 +38,24 @@ app.use('/transactions', transactionsRoutes);
 app.use('/categories', categoriesRoutes);
 app.use('/reports', reportsRoutes)
 
-app.use(express.static(path.join(__dirname, '..', '..', 'front_war')));
+app.use(express.static(path.join(__dirname, '..', 'front_war')));
 
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'front_war', 'main.html'));
+  res.sendFile(path.join(__dirname, '..', 'front_war', 'main.html'));
 });
 
 app.get('/2fa', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'front_war', '2fa_page.html'));
+  res.sendFile(path.join(__dirname, '..', 'front_war', '2fa_page.html'));
 });
 
 app.get('/users-page', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'front_war', 'users_page.html'));
+  res.sendFile(path.join(__dirname, '..', 'front_war', 'users_page.html'));
 }
 )
 
 app.get('/profile', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'front_war', 'profile.html'));
+  res.sendFile(path.join(__dirname, '..', 'front_war', 'profile.html'));
 }
 )
 //test commit
