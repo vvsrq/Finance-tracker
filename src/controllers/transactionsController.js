@@ -5,7 +5,7 @@ async function getAllTransactions(req, res) {
     try {
      console.log("getAllTransactions: запрос получен") 
 
-        const userId = req.userId;
+        const userId = req.session.userId;
         console.log("userId", req.session.userId); 
 
         const transactions = await Transaction.findAll({ where: { userId } });
