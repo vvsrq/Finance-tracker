@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const Session = require('../models/Session');
-require('dotenv').config({ path: path.join(__dirname, '../../../../.env') })
+require('dotenv').config({ path: path.join(__dirname, '../../../.env') })
 
 async function authMiddleware(req, res, next) {
   const token = req.headers.authorization && req.headers.authorization.split(' ')[1];

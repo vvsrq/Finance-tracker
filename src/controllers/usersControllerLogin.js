@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const QRCode = require('qrcode');
 const speakeasy = require('speakeasy');
 const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '../../../.env') })
+require('dotenv').config({ path: path.join(__dirname, '../../.env') })
 
 async function enable2FA(req, res) {
   try {
