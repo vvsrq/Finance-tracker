@@ -65,7 +65,7 @@ const PORT = 3000;
 
 async function startServer() {
   try {
-      await sequelize.sync({ force: false });  
+      await sequelize.sync({ force: true });  
       console.log('База данных синхронизирована');
   } catch (error) {
       console.error('Ошибка при запуске сервера:', error);
@@ -76,6 +76,8 @@ startServer();
 
 
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(` http://localhost:${PORT}`);
 })
+
+module.exports = server;

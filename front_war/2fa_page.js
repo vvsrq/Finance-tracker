@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const qrCodeElement = document.getElementById('qrCode');
     const secretKeyElement = document.getElementById('secretKey');
-    // const verificationCodeInput = document.getElementById('verificationCode');
     const twoFactorAuthErrorDiv = document.getElementById('twoFactorAuthError');
 
     function openSidebar() {

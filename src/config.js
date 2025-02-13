@@ -11,8 +11,8 @@ const sequelize = new Sequelize(db, {
   protocol: 'postgres',
   dialectOptions: {
     ssl: {
-      require: true,
-      rejectUnauthorized: false, // Важно для Supabase
+      require: false,
+      rejectUnauthorized: false, 
     }
   },
   logging: false,

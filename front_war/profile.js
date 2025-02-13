@@ -369,13 +369,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-
+    
             if (!response.ok) {
                 throw new Error('Ошибка при получении категорий: ' + response.status);
             }
-
+    
             const categories = await response.json();
-
+    
             const responseTrans = await fetch('/transactions', {
                 method: 'GET',
                 headers: {
@@ -383,67 +383,83 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-
+    
             if (!responseTrans.ok) {
                 throw new Error('Ошибка при получении транзакций: ' + responseTrans.status);
             }
-
+    
             const transactions = await responseTrans.json();
-
-            const expenses = transactions.filter(transaction => {
-                const category = categories.find(cat => cat.id === transaction.categoryId);
-                return category && category.type === 'expense';
+    
+            // Фильтруем только расходы
+            const expenses = transactions
+                .filter(transaction => {
+                    const category = categories.find(cat => cat.id === transaction.categoryId);
+                    return category && category.type === 'expense';
+                })
+                .map(transaction => ({
+                    date: new Date(transaction.date).toLocaleDateString(),
+                    amount: parseFloat(transaction.amount)
+                }));
+    
+            if (expenses.length === 0) {
+                document.getElementById('expenses_chart_div').innerHTML = '<p>Нет данных для построения графика.</p>';
+                return;
+            }
+    
+            // Группируем расходы по дате
+            const groupedExpenses = {};
+            expenses.forEach(({ date, amount }) => {
+                groupedExpenses[date] = (groupedExpenses[date] || 0) + amount;
             });
-
+    
+            // Преобразуем в массив для графика
             const data = new google.visualization.DataTable();
-            data.addColumn('string', 'Date');
-            data.addColumn('number', 'Amount');
-
-            expenses.forEach(transaction => {
-                data.addRow([transaction.date, parseFloat(transaction.amount)]);
+            data.addColumn('string', 'Дата');
+            data.addColumn('number', 'Сумма');
+    
+            Object.keys(groupedExpenses).forEach(date => {
+                data.addRow([date, groupedExpenses[date]]);
             });
-
+    
             const options = {
-                title: 'График расходов',
-                curveType: 'function',
-                legend: { position: 'bottom' },
-                backgroundColor: '#f8f9fa',
-                chartArea: {
-                    width: '90%',
-                    height: '90%'
+                title: 'График расходов по дням',
+                hAxis: {
+                    title: 'Дата',
+                    textStyle: { fontSize: 12 },
+                    slantedText: true,
+                    slantedTextAngle: 45
                 },
-                colors: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'],
-                fontSize: 14,
-                fontName: 'Arial',
-                legend: {
-                    alignment: 'center',
-                    position: 'right',
-                    textStyle: {
-                        color: '#333',
-                        fontSize: 14
-                    }
+                vAxis: {
+                    title: 'Сумма расходов',
+                    textStyle: { fontSize: 12 },
+                    gridlines: { count: 10 }
                 },
-                pieHole: 0.4,
-                pieSliceText: 'percentage',
-                pieSliceTextStyle: {
-                    color: 'white',
-                    fontSize: 14
+                backgroundColor: '#f9f9f9',
+                colors: ['#ff6b6b'],
+                chartArea: { width: '80%', height: '70%' },
+                animation: {
+                    startup: true,
+                    duration: 800,
+                    easing: 'out'
                 },
-                tooltip: {
-                    showColorCode: true,
-                    textStyle: {
-                        fontSize: 13
-                    }
-                }
+                legend: { position: 'none' }
             };
-
-
-
-            const chart = new google.visualization.PieChart(document.getElementById('expenses_chart_div'));
+    
+            const chartDiv = document.getElementById('expenses_chart_div');
+            
+            // Добавляем стили
+            chartDiv.style.marginTop = '20px';
+            chartDiv.style.borderRadius = '15px';
+            chartDiv.style.overflow = 'hidden';
+            chartDiv.style.background = 'rgba(255, 255, 255, 0.1)';
+            chartDiv.style.padding = '10px';
+    
+            const chart = new google.visualization.ColumnChart(chartDiv);
             chart.draw(data, options);
-
+    
         } catch (error) {
             console.error('Ошибка при получении данных для графика:', error);
+            document.getElementById('expenses_chart_div').innerHTML = '<p style="color:red;">Ошибка при загрузке данных.</p>';
         }
     }
 });

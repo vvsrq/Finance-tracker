@@ -43,7 +43,6 @@ async function enable2FA(req, res) {
 async function loginUser(req, res) {
   try {
     const { name, password, token2FA } = req.body;
-    console.log(req.body);
 
     // if (!name || !password) {
     //     return res.status(400).json({ message: 'Не все поля заполнены!' });

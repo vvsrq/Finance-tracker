@@ -22,8 +22,6 @@ async function createUser(req, res){
     try{
         const {id,name, password} = req.body;
 
-        console.log("Тело запроса:", req.body);
-
         // if (!name || !password) {
         //     return res.status(400).json({ message: 'Не все поля заполнены!' });
         // }
@@ -37,10 +35,8 @@ async function createUser(req, res){
             password: hashedPassword,
         });
 
-        console.log("Созданный пользователь:", newUser);
 
         req.session.userName = newUser.name;
-        console.log(req.session)
 
         const payload = {
           userId: newUser.id,
@@ -52,7 +48,6 @@ async function createUser(req, res){
            };
         const token = jwt.sign(payload, secretKey, options);
     
-        console.log(token)
         res.status(201).json({ message: 'Пользователь успешно создан',token });
     }
 
