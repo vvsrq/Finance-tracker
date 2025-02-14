@@ -18,7 +18,7 @@ async function authMiddleware(req, res, next) {
     console.log( decoded.userId);
 
 
-    const session = await Session.findOne({ where: { userId: decoded.userId } });
+    const session = await Session.findOne({ where: { id: decoded.sessionId } });
     console.log(session.id);
 
     if (!session) {

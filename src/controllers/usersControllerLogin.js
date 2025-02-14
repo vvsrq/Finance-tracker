@@ -78,7 +78,7 @@ async function loginUser(req, res) {
     req.session.userId = user.id;
     req.session.userName = user.name1;
 
-    await Session.destroy({ where: { userId: user.id } });
+    console.log("Destroyed " + await Session.destroy({ where: { userId: user.id } }) + " sessions.");
     const newSession = await Session.create({ userId: user.id });
 
 
