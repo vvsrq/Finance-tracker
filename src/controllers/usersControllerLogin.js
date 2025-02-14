@@ -6,12 +6,13 @@ const jwt = require('jsonwebtoken');
 const QRCode = require('qrcode');
 const speakeasy = require('speakeasy');
 const path = require('path');
+const uuid = require('uuid'); // Import uuid
 require('dotenv').config({ path: path.join(__dirname, '../../.env') })
 
 async function enable2FA(req, res) {
   try {
-    const userId = req.user.userId; 
-    const user = await User.findByPk(userId); 
+    const userId = req.user.userId;
+    const user = await User.findByPk(userId);
 
     if (!user) {
       return res.status(404).json({ message: 'Пользователь не найден' });
@@ -71,6 +72,9 @@ async function loginUser(req, res) {
       }
     }
 
+    const sessionToken = uuid.v4();
+    req.session.token = sessionToken;
+    req.session.user = user;
     req.session.userId = user.id;
     req.session.userName = user.name1;
 
@@ -81,6 +85,7 @@ async function loginUser(req, res) {
     const payload = {
       userId: user.id,
       userName: user.name1,
+      sessionId: newSession.id
     };
     const secretKey = process.env.JWT_SECRET;
     const options = {

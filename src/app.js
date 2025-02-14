@@ -63,16 +63,16 @@ app.get('/profile', (req, res) => {
 
 const PORT = 3000;
 
-async function startServer() {
-  try {
-      await sequelize.sync({ force: true });  
-      console.log('База данных синхронизирована');
-  } catch (error) {
-      console.error('Ошибка при запуске сервера:', error);
-  }
-}
+// async function startServer() {
+//   try {
+//       await sequelize.sync({ force: true });  
+//       console.log('База данных синхронизирована');
+//   } catch (error) {
+//       console.error('Ошибка при запуске сервера:', error);
+//   }
+// }
 
-startServer();
+// startServer();
 
 
 

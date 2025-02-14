@@ -15,6 +15,79 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorEditDiv = document.getElementById('error_edit')
     const token = localStorage.getItem('token');
 
+    class NotificationManager {
+        constructor() {
+            this.container = null;
+            this.initContainer();
+        }
+
+        initContainer() {
+            this.container = document.createElement('div');
+            this.container.className = 'notification-container';
+            document.body.appendChild(this.container);
+        }
+
+        show(options) {
+            const {
+                title = '',
+                message = '',
+                type = 'info', // 'success', 'error', 'info'
+                duration = 5000
+            } = options;
+
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+                <button class="notification-close">×</button>
+            `;
+
+            this.container.appendChild(notification);
+
+            const closeBtn = notification.querySelector('.notification-close');
+            closeBtn.addEventListener('click', () => this.hide(notification));
+
+            if (duration) {
+                setTimeout(() => this.hide(notification), duration);
+            }
+
+            return notification;
+        }
+
+        hide(notification) {
+            notification.classList.add('hiding');
+            notification.addEventListener('animationend', () => {
+                notification.remove();
+            });
+        }
+
+        success(title, message, duration) {
+            return this.show({ title, message, type: 'success', duration });
+        }
+
+        error(title, message, duration) {
+            return this.show({ title, message, type: 'error', duration });
+        }
+
+        info(title, message, duration) {
+            return this.show({ title, message, type: 'info', duration });
+        }
+    }
+
+    const notifications = new NotificationManager();
+
+    document.addEventListener('click', function (event) {
+        const sidebar = document.getElementById('sidebar');
+        const menuButton = document.querySelector('.menu-button');
+
+        if (!sidebar.contains(event.target) && event.target !== menuButton) {
+            closeSidebar();
+        }
+    });
 
 
     // Функция для получения транзакций с сервера
@@ -30,6 +103,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
             if (!response.ok) {
+                notifications.error(
+                    "Ошибка при получении транзакций: " + response.status
+                );
                 throw new Error("Ошибка при получении транзакций: " + response.status);
             }
 
@@ -40,7 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
             transactionsTableBody.innerHTML = '';
 
             if (transactions.length === 0) {
-                transactionsTableBody.innerHTML = "<tr><td colspan='5'>У вас пока нет транзакций</td></tr>";
+                notifications.success(
+                    "у вас нет транзакций"
+                );
             } else {
                 transactions.forEach(transaction => {
                     const row = document.createElement('tr');
@@ -61,8 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         catch (error) {
+            notifications.success(
+                "Ошибка получения транзакций:", error
+            );
             console.error("Ошибка получения транзакций:", error);
-            alert(error);
         }
     }
 
@@ -107,11 +187,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!response.ok) {
                 const error = await response.json();
+                notifications.error(
+                    "Ошибка создания транзакции:", error.message
+                );
                 throw new Error(error.message);
             }
             fetchTransactions();
         } catch (error) {
-            alert(error);
+            notifications.error(
+                'Ошибка при создании транзакции:', error
+            );
             console.error('Ошибка при создании транзакции:', error);
         }
     }
@@ -150,12 +235,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!response.ok) {
                 const error = await response.json();
+                notifications.error(
+                    "Ошибка при удалении транзакции:", error.message
+                );
                 throw new Error(error.message);
             }
             fetchTransactions();
         }
         catch (error) {
-            alert(error)
+            notifications.error(
+                'Ошибка при удалении транзакции:', error
+            );
             console.error('Ошибка при удалении транзакции:', error)
         }
     }
@@ -172,6 +262,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!response.ok) {
                 const error = await response.json();
+                notifications.error(
+                    "Ошибка при получении транзакции:", error.message
+                );
                 throw new Error(error.message);
             }
 
@@ -186,7 +279,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         }
         catch (error) {
-            alert(error);
+            notifications.error(
+                'Ошибка при получении транзакции:', error
+            );
             console.error('Ошибка при получении транзакции:', error);
         }
     }
@@ -214,7 +309,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('edit-form').style.display = 'none';
         }
         catch (error) {
-            alert(error);
+            notifications.error(
+                'Ошибка при обновлении транзакции:', error
+            );
             console.error('Ошибка при обновлении транзакции:', error)
         }
     }
@@ -227,7 +324,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const description = descriptionEditInput.value;
 
         if (!amount || !date || !categoryId) {
-            errorEditDiv.textContent = "Не все обязательные поля заполнены"
+            notifications.error(
+                'Не все обязательные поля заполнены',
+                '(Количество, Дата, Категория)'
+            );
+            
         }
         else {
             await saveEdit(id, amount, date, categoryId, description);
@@ -260,7 +361,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Ошибка при получении отчета по категориям:', errorData.message);
-                reportErrorDiv.textContent = 'Ошибка при получении отчета по категориям: ' + errorData.message;
+                notifications.error(
+                    'Ошибка при получении отчета по категориям:', errorData.message
+                );
                 return;
             }
             const report = await response.json();
@@ -284,7 +387,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Ошибка при запросе:', error);
-            reportErrorDiv.textContent = 'Ошибка сети. Попробуйте позже.';
+            notifications.error(
+                'Ошибка сети:', error
+            );
         }
     }
 
@@ -302,7 +407,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Ошибка при получении категорий:', errorData.message);
-                categoryErrorDiv.textContent = 'Ошибка при получении категорий: ' + errorData.message;
+                notifications.error(
+                    'Ошибка при получении категорий:', errorData.message
+                );
                 return;
             }
 
@@ -316,7 +423,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (error) {
             console.error('Ошибка при запросе:', error);
-            categoryErrorDiv.textContent = 'Ошибка сети. Попробуйте позже.';
+            notifications.error(
+                'Ошибка при запросе:', error
+            );
         }
     }
     fetchAndDisplayCategories();
@@ -343,16 +452,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 console.log('Категория добавлена');
+                notifications.success(
+                    'Категория добавлена'
+                );
                 addCategoryForm.reset();
                 fetchAndDisplayCategories();
             } else {
                 const errorData = await response.json();
                 console.error('Ошибка при создании категории:', errorData.message);
-                categoryErrorDiv.textContent = 'Ошибка создания категории: ' + errorData.message;
+                notifications.error(
+                    'Ошибка при создании категории:', errorData.message
+                );
             }
         } catch (error) {
             console.error('Ошибка сети:', error);
-            categoryErrorDiv.textContent = 'Ошибка сети. Попробуйте позже.';
+            notifications.error(
+                'Ошибка сети:', error
+            );
         }
     });
     google.charts.load('current', { 'packages': ['corechart'] });
@@ -369,13 +485,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-    
+
             if (!response.ok) {
+                notifications.error(
+                    'Ошибка при получении категорий:', response.status
+                );
                 throw new Error('Ошибка при получении категорий: ' + response.status);
             }
-    
+
             const categories = await response.json();
-    
+
             const responseTrans = await fetch('/transactions', {
                 method: 'GET',
                 headers: {
@@ -383,13 +502,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-    
+
             if (!responseTrans.ok) {
+                notifications.error(
+                    'Ошибка при получении транзакций:', responseTrans.status
+                );
                 throw new Error('Ошибка при получении транзакций: ' + responseTrans.status);
             }
-    
+
             const transactions = await responseTrans.json();
-    
+
             // Фильтруем только расходы
             const expenses = transactions
                 .filter(transaction => {
@@ -400,27 +522,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     date: new Date(transaction.date).toLocaleDateString(),
                     amount: parseFloat(transaction.amount)
                 }));
-    
+
             if (expenses.length === 0) {
                 document.getElementById('expenses_chart_div').innerHTML = '<p>Нет данных для построения графика.</p>';
                 return;
             }
-    
+
             // Группируем расходы по дате
             const groupedExpenses = {};
             expenses.forEach(({ date, amount }) => {
                 groupedExpenses[date] = (groupedExpenses[date] || 0) + amount;
             });
-    
+
             // Преобразуем в массив для графика
             const data = new google.visualization.DataTable();
             data.addColumn('string', 'Дата');
             data.addColumn('number', 'Сумма');
-    
+
             Object.keys(groupedExpenses).forEach(date => {
                 data.addRow([date, groupedExpenses[date]]);
             });
-    
+
             const options = {
                 title: 'График расходов по дням',
                 hAxis: {
@@ -444,22 +566,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 legend: { position: 'none' }
             };
-    
+
             const chartDiv = document.getElementById('expenses_chart_div');
-            
+
             // Добавляем стили
             chartDiv.style.marginTop = '20px';
             chartDiv.style.borderRadius = '15px';
             chartDiv.style.overflow = 'hidden';
             chartDiv.style.background = 'rgba(255, 255, 255, 0.1)';
             chartDiv.style.padding = '10px';
-    
+
             const chart = new google.visualization.ColumnChart(chartDiv);
             chart.draw(data, options);
-    
+
         } catch (error) {
             console.error('Ошибка при получении данных для графика:', error);
-            document.getElementById('expenses_chart_div').innerHTML = '<p style="color:red;">Ошибка при загрузке данных.</p>';
+            notifications.error(
+                'Ошибка при получении данных для графика:', error
+            );
         }
     }
 });

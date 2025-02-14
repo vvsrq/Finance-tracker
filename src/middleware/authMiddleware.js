@@ -19,7 +19,7 @@ async function authMiddleware(req, res, next) {
 
 
     const session = await Session.findOne({ where: { userId: decoded.userId } });
-    console.log(session);
+    console.log(session.id);
 
     if (!session) {
       console.log('Сессия не найдена, пожалуйста авторизуйтесь');

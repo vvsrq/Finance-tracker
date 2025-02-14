@@ -237,3 +237,86 @@ button[class="btn_trans"] {
 button[class="btn_trans"]:hover {
     background-color: #0056b3;
 }
+
+
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.notification {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 10px;
+    transform: translateX(120%);
+    animation: slideIn 0.5s forwards;
+    display: flex;
+    align-items: center;
+    max-width: 300px;
+}
+
+.notification.success {
+    border-left: 4px solid #4CAF50;
+}
+
+.notification.error {
+    border-left: 4px solid #f44336;
+}
+
+.notification.info {
+    border-left: 4px solid #2196F3;
+}
+
+.notification-content {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.notification-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #0a223a;
+}
+
+.notification-message {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-close:hover {
+    color: #666;
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    to {
+        transform: translateX(120%);
+    }
+}
+
+.notification.hiding {
+    animation: slideOut 0.5s forwards;
+}
