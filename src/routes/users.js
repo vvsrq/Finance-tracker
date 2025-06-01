@@ -7,4 +7,8 @@ router.post('/',  usersController.createUser);
 // router.get('/profile', authMiddleware, usersController.getProfile);
 router.get('/logout',  usersController.logoutUser);
 
+router.get('/error', (req, res) => {
+  res.status(500).send('Simulated error');
+});
+
 module.exports = router;

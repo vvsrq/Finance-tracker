@@ -1,5 +1,7 @@
 const express = require('express');
 const session = require('express-session');
+const client = require('prom-client');
+const collectDefaultMetrics = client.collectDefaultMetrics;
 const path = require('path');
 const crypto = require('crypto');
 const sequelize = require('./config.js');
@@ -18,6 +20,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+collectDefaultMetrics();
+
 const secret = crypto.randomBytes(32).toString('base64');
 
 app.use(session({
@@ -32,6 +36,25 @@ app.use(session({
   },
 }));
 
+const httpRequestDurationMicroseconds = new client.Histogram({
+  name: 'http_request_duration_seconds',
+  help: 'Продолжительность HTTP-запроса в секундах',
+  labelNames: ['method', 'route', 'code'],
+  buckets: [0.1, 0.3, 0.5, 0.7, 1, 1.5, 2]
+});
+
+app.use((req, res, next) => {
+  const startEpoch = Date.now();
+  res.on('finish', () => {
+    const responseTimeInSeconds = (Date.now() - startEpoch) / 1000;
+    const route = req.route?.path || req.originalUrl || req.path;
+    httpRequestDurationMicroseconds
+      .labels(req.method, route, String(res.statusCode))
+      .observe(responseTimeInSeconds);
+  });
+  next();
+});
+
 app.use('/users', usersRoutes);
 app.use('/login.js', loginRoutes);
 app.use('/transactions', transactionsRoutes);
@@ -40,6 +63,10 @@ app.use('/reports', reportsRoutes)
 
 app.use(express.static(path.join(__dirname, '..', 'front_war')));
 
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', client.register.contentType);
+  res.end(await client.register.metrics());
+});
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'front_war', 'main.html'));
@@ -53,6 +80,9 @@ app.get('/calc', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'front_war', 'calc.html'));
 });
 
+app.get('/error', (req, res) => {
+  res.status(500).send('Simulated error');
+});
 
 app.get('/profile', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'front_war', 'profile.html'));
@@ -61,7 +91,7 @@ app.get('/profile', (req, res) => {
 //test commit
 
 
-const PORT = 3000;
+const PORT = 4000;
 
 async function startServer() {
   try {
