@@ -16,17 +16,20 @@ jobs:
     - name: Setup SSH key
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/authorized_keys
-        chmod 600 ~/.ssh/authorized_keys
+        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+        eval "$(ssh-agent -s)"
+        ssh-add ~/.ssh/id_rsa
 
     - name: Copy files to EC2
       run: |
         rsync -avz --delete \
           --exclude '.git' \
           --exclude 'node_modules' \
-          ./ ${{ secrets.EC2_HOST }}:/opt/finance-app
+          -e "ssh -o StrictHostKeyChecking=no" \
+          ./ ubuntu@${{ secrets.EC2_HOST }}:/opt/finance-app
 
     - name: Restart backend on EC2
       run: |
-        ssh ${{ secrets.EC2_HOST }} 'sudo systemctl restart finance-app'
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} 'sudo systemctl restart finance-app'
