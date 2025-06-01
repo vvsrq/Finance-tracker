@@ -16,8 +16,8 @@ jobs:
     - name: Setup SSH key
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/authorized_keys/id_ed25519
-        chmod 600 ~/.ssh/id_ed25519
+        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/authorized_keys
+        chmod 600 ~/.ssh/authorized_keys
         ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
     - name: Copy files to EC2
