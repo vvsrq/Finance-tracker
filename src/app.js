@@ -54,7 +54,14 @@ app.use((req, res, next) => {
   });
   next();
 });
+//test commit
 
+// Настройка маршрутов
+
+// Настройка маршрутов
+
+//
+// Настройка маршрутов
 app.use('/users', usersRoutes);
 app.use('/login.js', loginRoutes);
 app.use('/transactions', transactionsRoutes);
