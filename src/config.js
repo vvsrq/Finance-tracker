@@ -4,7 +4,9 @@ require('dotenv').config({ path: path.join(__dirname, '..','.env') })
 const { Sequelize } = require('sequelize');
 
 const db = process.env.DB_URL;
-
+if (!db) {
+  throw new Error('DB_URL is not defined in the environment variables');
+}
 
 const sequelize = new Sequelize(db, {
   dialect: 'postgres',
